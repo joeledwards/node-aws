@@ -573,20 +573,18 @@ Put an object to an S3 bucket.
 
 #### s3.scanKeys
 
-Supplies an event emitter which supplies each key as as it is scanned from the S3 bucket.
+Supplies an async generator which yields each key as it is scanned from the S3 bucket.
 
 `s3.scanKeys(bucket, prefix, options)`
 - `bucket`: `string` | The bucket from which to list keys.
 - `prefix`: `string` | The prefix to which listed keys should be limited.
+- `options.limit`: `number` | The maximum number of keys to retrieve.
 - `options.delimiter`: `string` | The delimiter which should be used to group keys.
 - `options.includeMetadata`: `boolen` = `false` | Indicates whether each key should be supplied as an metadata-rich object instead of just they key name (string).
 
-Returns an event emitter.
+Returns an async generator.
 
-events:
-- `error` | An error ocurred while scanning S3 keys from the bucket. The `cause: Error` is supplied to the handler function.
-- `end` | No more keys are available (scanning completed successfully).
-- `key` | A key has been sent. If `includeMetadata = false`, the key is a `string` which is the key name. Otherwise it is an object: `{etag, key, size, timestamp}`.
+If `includeMetadata = false`, each generated key is a `string` which is the key name. Otherwise each generated key is an object: `{etag, key, size, timestamp}`.
 
 #### s3.scanLog
 
@@ -609,6 +607,18 @@ Runs [scanLog()](#s3scanlog) against every key in the named bucket with the spec
 - `scanner`: `({ line: string, key: string }) => nil` | The handler function which will be called with every line scanned from matching log objects.
 
 Returns a promise which will resolve on completion of the scan or reject if there was an error with any of the streams or an unhandled error thrown by the `scanner` function.
+
+#### s3.scanMpu
+
+Supplies an async generator which yields incomplete, multi-part uploads as they are scanned from the S3 bucket.
+
+`s3.scanMpu(bucket, options)`
+- `bucket`: `string` | The bucket from which to list uploads.
+- `options.limit`: `number` | The maximum number of uploads to retrieve.
+
+Returns an async generator.
+
+Each generated upload is an object: `{bucket, key, initiated}`.
 
 #### s3.select
 
