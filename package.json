@@ -16,6 +16,11 @@
     "aws-sdk",
     "helper"
   ],
+  "files": [
+    "package.json",
+    "README.md",
+    "lib/**/*.js"
+  ],
   "author": "Joel Edwards <joeledwards@gmail.com>",
   "license": "ISC",
   "bugs": {
