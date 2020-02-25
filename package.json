@@ -1,0 +1,31 @@
+{
+  "name": "@buzuli/aws",
+  "version": "1.0.0",
+  "description": "Wrapper around the aws-sdk providing various helper utilities",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeledwards/node-aws.git"
+  },
+  "keywords": [
+    "aws",
+    "sdk",
+    "aws-sdk",
+    "helper"
+  ],
+  "author": "Joel Edwards <joeledwards@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joeledwards/node-aws/issues"
+  },
+  "homepage": "https://github.com/joeledwards/node-aws#readme",
+  "dependencies": {
+    "@buzuli/meter": "^1.0.1",
+    "@buzuli/promised": "^1.0.0",
+    "aws-sdk": "^2.625.0",
+    "moment": "^2.24.0"
+  }
+}
