@@ -602,10 +602,11 @@ Returns a promise which will resolve on completion of the scan or reject if ther
 
 Runs [scanLog()](#s3scanlog) against every key in the named bucket with the specified prefix.
 
-`s3.scanLogs(bucket, prefix, scanner)`
+`s3.scanLogs(bucket, prefix, scanner, options)`
 - `bucket`: `string` | The bucket from which to stream objects.
 - `prefix`: `string` | The prefix identifying the objects to stream.
 - `scanner`: `({ line: string, key: string }) => nil` | The handler function which will be called with every line scanned from matching log objects.
+- `options.keyFilter`: `(key) => boolean` | An optional key filter which must return a truthy value for those keys which should be retained.
 
 Returns a promise which will resolve on completion of the scan or reject if there was an error with any of the streams or an unhandled error thrown by the `scanner` function.
 
