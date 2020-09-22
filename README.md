@@ -604,7 +604,7 @@ Runs [scanLog()](#s3scanlog) against every key in the named bucket with the spec
 
 `s3.scanLogs(bucket, prefix, scanner)`
 - `bucket`: `string` | The bucket from which to stream objects.
-- `key`: `string` | The prefix identifying the objects to stream.
+- `prefix`: `string` | The prefix identifying the objects to stream.
 - `scanner`: `({ line: string, key: string }) => nil` | The handler function which will be called with every line scanned from matching log objects.
 
 Returns a promise which will resolve on completion of the scan or reject if there was an error with any of the streams or an unhandled error thrown by the `scanner` function.
