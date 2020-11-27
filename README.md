@@ -1,6 +1,7 @@
 # @buzuli/aws
 
 Wraps [aws-sdk](https://npmjs.com/package/aws-sdk) and provides some utilities for simplifying common actions.
+Also attempts to simplify credential resolution.
 
 ## Install
 
@@ -94,11 +95,13 @@ const aws = require('@buzuli/aws')
 
 The configuration format for AWS SDK components.
 
-If this is missing for any SDK setup function (e.g., aws.s3()), it will pull from the default configuration locations (environment variables then ~/.aws).
+If this is missing for any SDK setup function (e.g., aws.s3()), it will pull from the default provider chain.
 
 - `region` | The AWS region (e.g., us-west-2).
-- `accessKey` | The auth key identity (accessKeyId).
-- `secretKey` | The auth key secret (secretAccessKey).
+- `credentials` | A Credentials implementation or an object containing the following.
+- `credentials.accessKeyId` | The auth key identity
+- `credentials.secretAccessKey` | The auth key secret
+- `credentials.sessionToken` | The session token (if available)
 
 ### aws.sdk
 
@@ -108,8 +111,9 @@ The [AWS JavaScript SDK](https://npmjs.com/package/aws-sdk).
 
 Interact with AWS Athena.
 
-`aws.athena(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.athena({ config, s3Config })`
+- [config](#awsconfig)
+- [s3Config](#awsconfig)
 
 Returns the AWS Athena utilities, exposing the resources below.
 
@@ -223,8 +227,8 @@ On completion resolves with `{ queryId, result }`
 
 Interact with AWS CloudWatch Events.
 
-`aws.cloudwatchEvents(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.cloudwatchEvents({ config })`
+- [config](#awsconfig)
 
 Returns the AWS CloudWatch Events utilities, exposing the resources below.
 
@@ -245,8 +249,8 @@ Returns a Promise which will be resolved with the outcome on completion.
 
 Interact with AWS DynamoDB.
 
-`aws.dynamodb(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.dynamodb({ config })`
+- [config](#awsconfig)
 
 Returns the AWS DynamoDB utilities, exposing the resources below.
 
@@ -279,8 +283,8 @@ Returns a Promise which will be resolved with the matching records on success.
 
 Interact with AWS EC2.
 
-`aws.ec2(awsConfig)`
-- [awsConfig]($awsconfig)
+`aws.ec2({ config })`
+- [config](#awsconfig)
 
 Returns the AWS EC2 utilities, exposing the resources below.
 
@@ -296,8 +300,8 @@ The raw SDK, initialized with the supplied configuration.
 
 Interact with AWS Lambda.
 
-`aws.lambda(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.lambda({ config })`
+- [config](#awsconfig)
 
 Returns the AWS Lambda utilities, exposing the resources below.
 
@@ -400,8 +404,8 @@ Returns a promise indicating the outcome.
 
 Interact with AWS SES.
 
-`aws.ses(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.ses({ config })`
+- [config](#awsconfig)
 
 #### ses.sdk
 
@@ -426,8 +430,8 @@ Returns a Promise which will supply an object containing the `MessageId` on succ
 
 Interact with AWS SQS.
 
-`aws.sqs(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.sqs({ config })`
+- [config](#awsconfig)
 
 #### sqs.sdk
 
@@ -493,8 +497,8 @@ Returns a Promise which which contains the message details on success.
 
 Interact with AWS S3.
 
-`aws.s3(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.s3({ config })`
+- [config](#awsconfig)
 
 Returns the AWS S3 utilities, exposing the resources below.
 
@@ -717,8 +721,8 @@ The SDK has a built-in timeout which will need to be handled and `whenExists()` 
 
 Interact with AWS Step Functions.
 
-`aws.stepFunctions(awsConfig)`
-- [awsConfig](#awsconfig)
+`aws.stepFunctions({ config })`
+- [config](#awsconfig)
 
 Returns the AWS Step Functions utilities, exposing the resources below.
 
