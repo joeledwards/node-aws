@@ -15,9 +15,35 @@ $ npm i @buzuli/aws
 const aws = require('@buzuli/aws')
 ```
 
+### Default aws-sdk credential resolution
+
+```
+const { sdk } = aws
+```
+
+### Custom configuration
+
+```
+const { sdk } = aws.configure({ credentials, region })
+```
+
+### Resolve credential chain asynchronously (supports SSO)
+
+Requires the following fields in the identified profile
+- `sso_region`: `string` | Name of the AWS region (e.g., `us-east-1`)
+- `sso_account_id`: `integer` | AWS account number (e.g., `123456789000`)
+- `sso_role_name`: `string` | The role to assume on successful authentication.
+- `sso_start_url`: `url` | The start URL of the OIDC identity service.
+
+```
+const { sdk } = await aws.resolve({ profile, timeout })
+```
+
 ## Table of Contents
 - [aws](#aws)
   - [awsConfig](#awsconfig)
+  - [configure()](#awsconfigure)
+  - [resolve()](#awsresolve)
   - [sdk](#awssdk)
   - [athena](#awsathena)
     - [sdk](#athenasdk)
@@ -103,6 +129,37 @@ If this is missing for any SDK setup function (e.g., aws.s3()), it will pull fro
 - `credentials.secretAccessKey` | The auth key secret
 - `credentials.sessionToken` | The session token (if available)
 
+### aws.configure
+
+Configures the SDK with custom credentials and region.
+
+`aws.configure(config)`
+- [config](#awsconfig)
+
+Returns an object containing the base SDK and all supported service utilities:
+```
+{
+  sdk,
+  ...services
+}
+```
+
+### aws.resolve
+
+Attempts to resolve the credentials chain, starting with SSO credentials.
+
+`aws.resolve({ profile = 'default', timeout = 120 }?)`
+- `profile`: `number` | Profile to load for SSO.
+- `timeout`: `number` | Maximum number of seconds to wait for SSO auth to complete.
+
+Returns a Promise which, on success, returns an object containing the base SDK and all supported service utilities:
+```
+{
+  sdk,
+  ...services
+}
+```
+
 ### aws.sdk
 
 The [AWS JavaScript SDK](https://npmjs.com/package/aws-sdk).
@@ -111,7 +168,7 @@ The [AWS JavaScript SDK](https://npmjs.com/package/aws-sdk).
 
 Interact with AWS Athena.
 
-`aws.athena({ config, s3Config })`
+`aws.athena({ config, s3Config }?)`
 - [config](#awsconfig)
 - [s3Config](#awsconfig)
 
