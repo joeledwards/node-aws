@@ -4,6 +4,8 @@
   "description": "Wrapper around the aws-sdk providing various helper utilities",
   "main": "lib/index.js",
   "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,6 +31,7 @@
   "homepage": "https://github.com/joeledwards/node-aws#readme",
   "dependencies": {
     "@buzuli/color": "^2.2.2",
+    "@buzuli/json": "^2.1.0",
     "@buzuli/meter": "^1.4.0",
     "@buzuli/promised": "^1.0.0",
     "@buzuli/throttle": "^2.0.2",
@@ -43,5 +46,8 @@
     "nodemailer": "^6.4.16",
     "open": "^7.3.0",
     "pretty-bytes": "^5.4.1"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
   }
 }

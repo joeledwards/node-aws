@@ -148,9 +148,13 @@ Returns an object containing the base SDK and all supported service utilities:
 
 Attempts to resolve the credentials chain, starting with SSO credentials.
 
-`aws.resolve({ profile = 'default', timeout = 120 }?)`
-- `profile`: `number` | Profile to load for SSO.
-- `timeout`: `number` | Maximum number of seconds to wait for SSO auth to complete.
+`aws.resolve({ config, logger, profile, quiet, timeout, verbose }?)`
+- `config`: `object` | Custom config to use instead of loading from disk. 
+- `logger`: `object` = `console` | Custom logger object.
+- `profile`: `number` = `default` | Profile to load for SSO.
+- `quiet`: `boolean` = `false` | Only log warning and error messages.
+- `timeout`: `number` = 120 | Maximum number of seconds to wait for SSO auth to complete.
+- `verbose`: `boolean` = `false` | Log verbose messages.
 
 Returns a Promise which, on success, returns an object containing the base SDK and all supported service utilities:
 ```
