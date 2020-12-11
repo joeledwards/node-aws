@@ -1,6 +1,6 @@
 {
   "name": "@buzuli/aws",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Wrapper around the aws-sdk providing various helper utilities",
   "main": "lib/index.js",
   "scripts": {
