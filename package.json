@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap ./test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "@buzuli/promised": "^1.0.0",
     "@buzuli/throttle": "^2.0.2",
     "@buzuli/url": "^1.0.1",
+    "@buzuli/util": "^1.0.0",
     "aws-sdk": "^2.812.0",
     "byline": "^5.0.0",
     "durations": "^3.4.2",
@@ -48,6 +49,7 @@
     "pretty-bytes": "^5.4.1"
   },
   "devDependencies": {
-    "standard": "^16.0.3"
+    "standard": "^16.0.3",
+    "tap": "^14.11.0"
   }
 }
