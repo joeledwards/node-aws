@@ -4,7 +4,7 @@ const {
   s3: {
     formatUri,
     parseUri,
-    resolveResourceInfo,
+    resolveResourceInfo
   }
 } = require('../lib/util')
 
