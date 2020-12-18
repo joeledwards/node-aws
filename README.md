@@ -45,6 +45,7 @@ const { sdk } = await aws.resolve({ profile, timeout })
   - [configure()](#awsconfigure)
   - [resolve()](#awsresolve)
   - [sdk](#awssdk)
+  - [util](#awsutil)
   - [athena](#awsathena)
     - [sdk](#athenasdk)
     - [cancelQuery()](#athenacancelquery)
@@ -167,6 +168,13 @@ Returns a Promise which, on success, returns an object containing the base SDK a
 ### aws.sdk
 
 The [AWS JavaScript SDK](https://npmjs.com/package/aws-sdk).
+
+### aws.util
+
+Miscellaneous utilities.
+
+- `s3.formatUri(bucket: string, key: string) -> uri`
+- `s3.parseUri(uri: string) -> { bucket: string, key: string }`
 
 ### aws.athena
 
