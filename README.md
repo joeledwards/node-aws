@@ -236,11 +236,16 @@ Returns a promise which indicates the outcome of the query.
 
 On completion resolves with `{ queryId, duration, bytesScanned, state, timedOut, success }`:
 - `queryId`: `string` | The ID of the query.
-- `execDuration`: `float` | The duration of the query in seconds (floating point value).
 - `bytesScanned`: `number` | The number of bytes read by the query.
 - `state`: `string` | The outcome state of the query.
 - `timedOut`: `boolean` | Indicates whether the query timed out.
 - `success`: `boolean` | Indicates whether the query succeeded.
+- `durations`: `object` | The durations metrics for each part of the query.
+- `durations.queue`: `number` | The time (in seconds) that the query spent queued.
+- `durations.plan`: `number` | The time (in seconds) taken to plan the query after it left the queue.
+- `durations.exec`: `number` | The time (in seconds) taken to execute the query after planning completed.
+- `durations.publish`: `number` | The time (in seconds) taken to publish results after the query finished executing.
+- `durations.total`: `number` | The total amount of time Athena took to process the query.
 
 #### athena.queryResults
 
@@ -267,7 +272,7 @@ Returns a promise which will contain the query status if the query was found.
 - `queryType`: `string` | the type of query (DDL | DML).
 - `schema`: `string` | the schema containing the query resources.
 - `bytesScanned`: `integer` | The number ob bytes read by the query.
-- `execDuration`: `float` | The duration of the query in seconds (floating point value).
+- `durations`: `float` | The duration of the query in seconds (floating point value; see `durations` from [queryDone()]($athenaquerydone)).
 - `submittedAt`: `timestamp` | The submission time of the query.
 - `completedAt`: `timestamp` | The completion time of the query (if applicable).
 - `finished`: `boolean` | Indicates whether the query finished.
@@ -293,9 +298,10 @@ Returns a promise which will resolve on query completion with a summary of the q
 
 On completion resolves with `{ queryId, result, duration, bytesScanned, token, success, timedOut }`
 - `queryId`: `string` | The ID of the query.
-- `duration`: `Duration` | The duration of the query in seconds (floating point value).
+- `durations`: `float` | The duration of the query in seconds (floating point value; see `durations` from [queryDone()]($athenaquerydone)).
 - `bytesScanned`: `number` | The number of bytes read by the query.
 - `token`: `string` | The query token.
+- `state`: `string` | The outcome state of the query.
 - `success`: `boolean` | Indicates whether the query succeeded.
 - `timedOut`: `boolean` | Indicates whether the query timed out.
 - `outputLocation`: `object` | The location of the query results on S3 (see `outputLocation` from [startQuery()](#athenastartquery)).
