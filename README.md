@@ -35,6 +35,9 @@ Requires the following fields in the identified profile
 - `sso_role_name`: `string` | The role to assume on successful authentication.
 - `sso_start_url`: `url` | The start URL of the OIDC identity service.
 
+If you do not have a `~/.aws/credentials` file, make sure you don't have
+`AWS_SDK_LOAD_CONFIG` exported in your environment.
+
 ```
 const { sdk } = await aws.resolve({ profile, timeout })
 ```
@@ -49,11 +52,13 @@ const { sdk } = await aws.resolve({ profile, timeout })
   - [athena](#awsathena)
     - [sdk](#athenasdk)
     - [cancelQuery()](#athenacancelquery)
+    - [listQueries()](#athenalistqueries)
     - [loadQuery()](#athenaloadquery)
     - [queryDone()](#athenaquerydone)
     - [queryResults()](#athenaqueryresults)
-    - [queryrStatus()](#athenaquerystatus)
+    - [queryStatus()](#athenaquerystatus)
     - [runQuery()](#athenarunquery)
+    - [scanQueries()](#athenascanqueries)
     - [startQuery()](#athenastartquery)
   - [cloudwatchEvents](#awscloudwatchevents)
     - [sdk](#cloudwatcheventssdk)
@@ -199,6 +204,14 @@ Cancels an Athena query.
 
 Returns a promise which indicates the outcome of the query cancellation.
 
+#### athena.listQueries
+
+List Athena queries.
+
+`athena.listQueries()`
+
+Returns a promis which, on success, supplies a list of Athena queries.
+
 #### athena.loadQuery
 
 Load an Athena query from a file, optionally applying substitutions.
@@ -221,10 +234,10 @@ Poll a query until completion or timeout.
 
 Returns a promise which indicates the outcome of the query.
 
-On completion resolves with `{ queryId, duration, bytes, state, timedOut, success }`:
+On completion resolves with `{ queryId, duration, bytesScanned, state, timedOut, success }`:
 - `queryId`: `string` | The ID of the query.
-- `duration`: `Duration` | The duration of the query in seconds (floating point value).
-- `bytes`: `number` | The number of bytes read by the query.
+- `execDuration`: `float` | The duration of the query in seconds (floating point value).
+- `bytesScanned`: `number` | The number of bytes read by the query.
 - `state`: `string` | The outcome state of the query.
 - `timedOut`: `boolean` | Indicates whether the query timed out.
 - `success`: `boolean` | Indicates whether the query succeeded.
@@ -248,6 +261,20 @@ Determine the status of a query.
 
 Returns a promise which will contain the query status if the query was found.
 
+- `query`: `Query` | The query text.
+- `workGroup`: `string` | The workgroup in which the query ran.
+- `queryId`: `string` | The ID of the query to evaluate.
+- `queryType`: `string` | the type of query (DDL | DML).
+- `schema`: `string` | the schema containing the query resources.
+- `bytesScanned`: `integer` | The number ob bytes read by the query.
+- `execDuration`: `float` | The duration of the query in seconds (floating point value).
+- `submittedAt`: `timestamp` | The submission time of the query.
+- `completedAt`: `timestamp` | The completion time of the query (if applicable).
+- `finished`: `boolean` | Indicates whether the query finished.
+- `state`: `string` | The outcome state of the query.
+- `stateReason`: `string` | The reason for the state transition.
+- `manifestLocation`: `string` | The query manifest file location.
+- `outputLocation`: `object` | The location of the query results on S3 (see `outputLocation` from [startQuery()](#athenastartquery)).
 
 #### athena.runQuery
 
@@ -256,41 +283,49 @@ Run a query and wait for it to complete optionally
 `athena.runQuery(options)`
 - `options.query`: `string` | The query (DDL or SQL) to run.
 - `options.queryTag`: `string` | A supplimental identifier which will be included in the query token.
-- `options.sinkBucket`: `string` | The S3 bucket where query results should be written.
+- `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
 - `options.timeout`: `number` = `600000` | The maximum number of milliseconds to wait for the query to complete before reporting failure.
 - `options.pollInterval`: `number` = `5000` | The number of milliseconds to delay between poll attempts.
-- `options.progress`: `boolean` = `true` | Whether to report query progress on each poll event.
+- `options.progress`: `boolean` = `false` | Whether to report query progress on each poll event.
 
 Returns a promise which will resolve on query completion with a summary of the query.
 
-On completion resolves with `{ queryId, result, duration, bytes, token, success, timedOut }`
+On completion resolves with `{ queryId, result, duration, bytesScanned, token, success, timedOut }`
 - `queryId`: `string` | The ID of the query.
-- `result`: `object` | The location of the query results on S3 (see `result` from [startQuery()](#athenastartquery)).
 - `duration`: `Duration` | The duration of the query in seconds (floating point value).
-- `bytes`: `number` | The number of bytes read by the query.
+- `bytesScanned`: `number` | The number of bytes read by the query.
 - `token`: `string` | The query token.
 - `success`: `boolean` | Indicates whether the query succeeded.
 - `timedOut`: `boolean` | Indicates whether the query timed out.
+- `outputLocation`: `object` | The location of the query results on S3 (see `outputLocation` from [startQuery()](#athenastartquery)).
 
 #### athena.startQuery
 
 Start a new Athena query (DDL or SQL).
 
 `athena.startQuery(options)`
-- `options.sinkBucket`: `string` | The S3 bucket where query results should be written.
+- `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
 - `options.query`: `string` | The query (DDL or SQL) to run.
 - `options.token`: `string` | A token for the query (must be unique within Athena for this AWS account).
 
 Returns a promise which will resolve with query details if the query starts successfully.
 
-On completion resolves with `{ queryId, result }`
+On completion resolves with `{ queryId, resultLocation }`
 - `queryId`: `string` | The ID of the query.
-- `result`: `object` | The location of the query results on S3 (will be written when the query completes successfully).
-  - `result.bucket` : `string` | The bucket where the results will be written.
-  - `result.key` : `string` | The key which will contain the results CSV.
-  - `result.url` : `string` | The location of the results CSV in URL form.
+- `outputLocation`: `object` | The location of the query results on S3 (will be written when the query completes successfully).
+  - `outputLocation.bucket` : `string` | The bucket where the results will be written.
+  - `outputLocation.key` : `string` | The key which will contain the results CSV.
+  - `outputLocation.url` : `string` | The location of the results CSV in URL form.
+
+#### athena.scanQueries
+
+Scan Athena queries.
+
+`athena.scanQueries()`
+
+Returns an async iterator listing Athena queries.
 
 ### aws.cloudwatchEvents
 
