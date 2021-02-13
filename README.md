@@ -178,7 +178,8 @@ The [AWS JavaScript SDK](https://npmjs.com/package/aws-sdk).
 
 Miscellaneous utilities.
 
-- `s3.formatUri(bucket: string, key: string) -> uri`
+- `s3.formatUri(bucket: string, key: string, options: object) -> uri`
+  - `options.color: boolean = false`
 - `s3.parseUri(uri: string) -> { bucket: string, key: string }`
 
 ### aws.athena
