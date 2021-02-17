@@ -268,7 +268,7 @@ Determine the status of a query.
 Returns a promise which will contain the query status if the query was found.
 
 - `query`: `Query` | The query text.
-- `workGroup`: `string` | The workgroup in which the query ran.
+- `workGroup`: `string` | The Athena workgroup in which the query ran.
 - `queryId`: `string` | The ID of the query to evaluate.
 - `queryType`: `string` | the type of query (DDL | DML).
 - `schema`: `string` | the schema containing the query resources.
@@ -289,6 +289,7 @@ Run a query and wait for it to complete optionally
 `athena.runQuery(options)`
 - `options.query`: `string` | The query (DDL or SQL) to run.
 - `options.queryTag`: `string` | A supplimental identifier which will be included in the query token.
+- `options.workGroup`: `string` | The Athena workgroup where the query should be run (uses the default if none is supplied).
 - `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
 - `options.timeout`: `number` = `600000` | The maximum number of milliseconds to wait for the query to complete before reporting failure.
@@ -312,6 +313,7 @@ On completion resolves with `{ queryId, result, duration, bytesScanned, token, s
 Start a new Athena query (DDL or SQL).
 
 `athena.startQuery(options)`
+- `options.workGroup`: `string` | The Athena workgroup where the query should be run (uses the default if none is supplied).
 - `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
 - `options.query`: `string` | The query (DDL or SQL) to run.
