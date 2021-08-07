@@ -687,6 +687,7 @@ Put an object to an S3 bucket.
 - `payload`: `string | Buffer | ReadableStream` | The content which should be stored to S3.
 - `options.contentType`: `string` | The content-type of the payload.
 - `options.contentEncoding`: `string` | The content-encoding of the payload.
+- `options.metadata`: `object` | Metadata fields to add to the record
 - `options.publish`: `boolean` = `false` | Indicates whether the object should be made publicly readable.
 
 #### s3.scanKeys
