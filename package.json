@@ -37,7 +37,7 @@
     "@buzuli/throttle": "^2.0.2",
     "@buzuli/url": "^1.0.1",
     "@buzuli/util": "^1.0.0",
-    "aws-sdk": "^2.1069.0",
+    "aws-sdk": "^2.1073.0",
     "byline": "^5.0.0",
     "durations": "^3.4.2",
     "gunzip-maybe": "^1.4.2",
