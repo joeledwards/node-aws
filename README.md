@@ -287,9 +287,11 @@ Returns a promise which will contain the query status if the query was found.
 Run a query and wait for it to complete optionally 
 
 `athena.runQuery(options)`
-- `options.query`: `string` | The query (DDL or SQL) to run.
+- `options.query`: `string` [required] | The query (DDL or SQL) to run.
 - `options.queryTag`: `string` | A supplimental identifier which will be included in the query token.
 - `options.workGroup`: `string` | The Athena workgroup where the query should be run (uses the default if none is supplied).
+- `options.catalog`: `string` | The catalog which Athena should use (uses AWS Glue if none is supplied).
+- `options.databases`: `string` | The database in which Athena should find tables names which have no database prefix.
 - `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
 - `options.timeout`: `number` = `600000` | The maximum number of milliseconds to wait for the query to complete before reporting failure.
@@ -313,11 +315,13 @@ On completion resolves with `{ queryId, result, duration, bytesScanned, token, s
 Start a new Athena query (DDL or SQL).
 
 `athena.startQuery(options)`
+- `options.query`: `string` [required] | The query (DDL or SQL) to run.
+- `options.token`: `string` | A token for the query (must be unique within Athena for this AWS account).
 - `options.workGroup`: `string` | The Athena workgroup where the query should be run (uses the default if none is supplied).
+- `options.catalog`: `string` | The catalog which Athena should use (uses AWS Glue if none is supplied).
+- `options.databases`: `string` | The database in which Athena should find tables names which have no database prefix.
 - `options.resultBucket`: `string` | The S3 bucket where query results should be written.
 - `options.resultPrefix`: `string` | The prefix to append to query result S3 keys.
-- `options.query`: `string` | The query (DDL or SQL) to run.
-- `options.token`: `string` | A token for the query (must be unique within Athena for this AWS account).
 
 Returns a promise which will resolve with query details if the query starts successfully.
 
