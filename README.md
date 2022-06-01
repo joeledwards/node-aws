@@ -157,10 +157,10 @@ Attempts to resolve the credentials chain, starting with SSO credentials.
 `aws.resolve({ config, logger, profile, quiet, timeout, verbose }?)`
 - `config`: `object` | Custom config to use instead of loading from disk. 
 - `logger`: `object` = `console` | Custom logger object.
-- `profile`: `number` = `default` | Profile to load for SSO.
-- `quiet`: `boolean` = `false` | Only log warning and error messages.
-- `timeout`: `number` = 120 | Maximum number of seconds to wait for SSO auth to complete.
-- `verbose`: `boolean` = `false` | Log verbose messages.
+- `profile`: `number` = `default` | Profile to load for SSO. Overrides value of the `BUZULI_AWS_PROFILE` environment variable.
+- `quiet`: `boolean` = `false` | Only log warning and error messages. Overrides value of the `BUZULI_AWS_QUIET` environment variable.
+- `timeout`: `number` = 120 | Maximum number of seconds to wait for SSO auth to complete. Overrides value of the `BUZULI_AWS_QUIET` environment variable.
+- `verbose`: `boolean` = `false` | Log verbose messages. Overrides value of the `BUZULI_AWS_VERBOSE` environment variable.
 
 Returns a Promise which, on success, returns an object containing the base SDK and all supported service utilities:
 ```
@@ -169,6 +169,12 @@ Returns a Promise which, on success, returns an object containing the base SDK a
   ...services
 }
 ```
+
+You can configure some of the parameters to `resolve()` via environment variables. Hoever, the parameters take precedence over the environment variables if supplied.
+- `BUZULI_AWS_PROFILE` => `profile`
+- `BUZULI_AWS_QUIET` => `quiet`
+- `BUZULI_AWS_TIMEOUT` => `timeout`
+- `BUZULI_AWS_VERBOSE` => `verbose`
 
 ### aws.sdk
 
