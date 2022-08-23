@@ -157,7 +157,7 @@ Attempts to resolve the credentials chain, starting with SSO credentials.
 `aws.resolve({ config, logger, profile, quiet, timeout, verbose }?)`
 - `config`: `object` | Custom config to use instead of loading from disk. 
 - `logger`: `object` = `console` | Custom logger object.
-- `profile`: `number` = `default` | Profile to load for SSO. Overrides value of the `BUZULI_AWS_PROFILE` environment variable.
+- `profile`: `string` = `default` | Profile to load for SSO. Overrides value of the `BUZULI_AWS_PROFILE` environment variable.
 - `quiet`: `boolean` = `false` | Only log warning and error messages. Overrides value of the `BUZULI_AWS_QUIET` environment variable.
 - `timeout`: `number` = 120 | Maximum number of seconds to wait for SSO auth to complete. Overrides value of the `BUZULI_AWS_QUIET` environment variable.
 - `verbose`: `boolean` = `false` | Log verbose messages. Overrides value of the `BUZULI_AWS_VERBOSE` environment variable.
