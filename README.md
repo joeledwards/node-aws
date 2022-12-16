@@ -35,8 +35,8 @@ Requires the following fields in the identified profile
 - `sso_role_name`: `string` | The role to assume on successful authentication.
 - `sso_start_url`: `url` | The start URL of the OIDC identity service.
 
-If you do not have a `~/.aws/credentials` file, make sure you don't have
-`AWS_SDK_LOAD_CONFIG` exported in your environment.
+If you are using profiles in `~/.aws/config`, you may need to export 
+`AWS_SDK_LOAD_CONFIG` with a truthy value in your shell.
 
 ```
 const { sdk } = await aws.resolve({ profile, timeout })
